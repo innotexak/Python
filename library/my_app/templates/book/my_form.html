@@ -1,0 +1,20 @@
+{% extends 'book/index.html'%} 
+{% block content %}
+
+<div class="container">
+
+        <form method="POST", enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2 class="display-3 text-center" style="background-color: red; color:white!important;">UPLOAD FORM</h2>
+            <div class="col-sm-6 offset-4">
+              {% for field in my_form %}
+            <h5>  {{ field.label }}</h5>
+             <h5> {{ field }}</h5>
+            {% endfor %}
+            <button class="btn btn-primary"> Submit</button>
+            </div>
+        </form>
+
+    
+</div>
+{% endblock %}

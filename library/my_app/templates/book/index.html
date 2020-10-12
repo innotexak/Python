@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+{% if user.is_authenticated %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">DJANGO CRUD</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" href="#">HOME <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'upload' %}">UPLOAD</a>
+            <a class="nav-link" href="#">ADMIN</a>
+            <a class="nav-link" href="#">Welcome {{user.email}}</a>
+          </div>
+        </div>
+      </nav>
+  
+        {% block content %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class=" alert alert-{{ message.tags }}"{% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% for book in shelf %}
+              <div class="card-columns">
+                <div class="card" style="width:18rem;">
+               
+                   <img src="{{ book.image.url }}" class="card-img-top" alt="Dynamic image"> 
+                  </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{book.title}}</h5>
+                  <h6 class="muted-text">{{book.autho}} | {{book.pub_date}}</h6>
+                  <p class="card-text">{{book.description}}</p>
+                  <a href="update/{{book.id}}" class="btn btn-primary" id="{{book.id}}">Edit</a>
+                  <a href="delete/{{book.id}}" class="btn btn-danger" id="{{book.id}}">Delete</a>
+                </div>
+              </div>
+            {% endfor %}
+        
+    {% endblock %}
+
+    {% else %}
+    <h2>Please you need to login first </h2>
+              <a href="{% url 'login'%}">Login</a>
+    {% endif %}
+</body>
+</html>
